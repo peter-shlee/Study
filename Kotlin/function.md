@@ -166,6 +166,15 @@
 * 익명 함수의 형태 중 한가지
 * 함수를 이름 없이 사용 가능
 * 람다식은 함수의 인자로 넘기거나, 리턴값으로 반환할 수 있다 (일급 객체)
+* 람다식은 다음과 같은 형태로 선언할 수 있다
+
+    ```Kotlin
+    { <매개변수> -> <함수 body>}
+
+    val lambda = { a: Int, b: Int -> a + b }
+    val lambda2: (Int, Int) -> Int = { a, b -> a + b }
+    ```
+
 
     ```Kotlin
     fun main() {
@@ -231,4 +240,30 @@
   -1
   12
   0
+  ```
+
+* 람다식의 함수 body에 expression이 여러개인 경우, 마지막 expression이의 결과가 반환된다
+
+  ```Kotlin
+  fun main() {
+  
+      fun calc(a: Int, b: Int, op: (Int, Int) -> Int): Int {
+          return op(a, b)
+      }
+  
+      val result = calc(3, 4) { a, b ->
+          println(a + b)
+          a + b
+      }
+  
+      println("result: $result")
+  
+  }
+  ```
+
+    위 코드의 결과는 다음과 같다
+
+  ```
+  7
+  result: 7
   ```
