@@ -8,6 +8,12 @@
   - [가변 인자 vararg](#가변-인자-vararg)
   - [명시적 인자 전달](#명시적-인자-전달)
   - [**람다식**](#람다식)
+  - [익명함수](#익명함수)
+  - [인라인 함수](#인라인-함수)
+    - [```inline```](#inline)
+    - [```noinline```](#noinline)
+    - [```crossinline```](#crossinline)
+  - [확장 함수](#확장-함수)
 
 * 람다식에는 새로운 개념이 많으니 자세히 살펴보도록 하자
 
@@ -395,3 +401,78 @@
   ```
   result: 7
   ```
+
+## 익명함수
+
+* 이름이 없는 함수
+* 람다식과 흡사하지만 약간 다름
+* 람다식에서는 return, break, continue를 사용하기가 어려움 (의도한대로 작동하지 않음)
+* 익명함수에서는 return, break, continue를 정상적으로 사용할 수 있다
+
+  ```Kotlin
+  fun main() {
+
+    val anonymousAdd = fun (a: Int, b: Int) = a + b
+
+    println(anonymousAdd(3, 4))
+
+  }
+  ```
+
+    위 코드의 결과는 다음과 같다
+
+  ```
+  7
+  ```
+
+## 인라인 함수
+
+### ```inline```
+
+* ```inline``` 키워드 사용
+* 함수 호출부에 함수 body의 code가 복사됨
+* 함수 호출시 분기 없이 바로 처리 -> 성능 향상
+
+### ```noinline```
+
+* inline 함수 사용시 코드가 복사되기 때문에 내용이 많은 함수에 사용하면 코드가 늘어난다
+* 이를 방지하기 위해 람다식에 ```noinline``` 키워드를 사용하면 컴파일시 해당 람다함수는 코드를 복사하지 않고 그대로 남겨둔다
+
+### ```crossinline```
+
+* 람다식에서 return, break, continue를 사용할 경우 다음과 같은 문제가 발생할 수 있다
+* 람다식 호출부가 람다식 body의 code로 치환되면서 의도치 않았을 때 return, break, continue가 될 수 있다
+* 이것을 nonlocal return 이라고 한다
+* nonlocal return을 방지하기 위해 ```crossinline``` 키워드를 사용한다
+
+## 확장 함수
+
+* class의 method를 외부에서 추가할 때 사용한다
+* 확장함수를 사용하면 코드를 직접 수정하지 않고도 외부 라이브러리에 새로운 method를 추가할 수 있다
+* 다음과 같이 확장 함수를 선언할 수 있다
+
+  ```Kotlin
+  fun <확장 대상 class>.<함수명>(<매개변수>, ...): <리턴 타입> {
+      <함수 body>
+      return <리턴 값>
+  }
+  ```
+
+  ```Kotlin
+  fun main() {
+      println(3.getBigger(4))
+  }
+
+  fun Int.getBigger(num: Int): Int {
+      return if (this > num) this else num
+  }
+  ```
+
+    위 코드의 결과는 다음과 같다
+
+  ```
+  4
+  ```
+
+  위와 같이 확장 함수를 이용해 기본 자료형인 Int에 새로운 메서드를 추가할 수 있다
+  
