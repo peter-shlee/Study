@@ -1,5 +1,14 @@
 # Kotlin의 함수
 
+- [Kotlin의 함수](#kotlin의-함수)
+  - [함수 선언](#함수-선언)
+  - [Unit type](#unit-type)
+  - [지역 함수](#지역-함수)
+  - [매개변수 기본 값 지정](#매개변수-기본-값-지정)
+  - [가변 인자 vararg](#가변-인자-vararg)
+  - [명시적 인자 전달](#명시적-인자-전달)
+  - [람다식](#람다식)
+
 ## 함수 선언
 
 * 함수는 다음과 같은 형태로 선언한다
@@ -188,38 +197,38 @@
   * 람다식을 매개변수를 감싸는 소괄호 밖으로 빼낼 수 있게된다
   * 람다식이 길어질 경우 여러 줄에 쓸 수 있게된다
 
-    ```Kotlin
-    fun main() {
+  ```Kotlin
+  fun main() {
 
-        fun calc(a: Int, b: Int, op: (Int, Int) -> Int): Int {
-            return op(a, b)
-        }
+      fun calc(a: Int, b: Int, op: (Int, Int) -> Int): Int {
+          return op(a, b)
+      }
 
-        println(
-                calc(3, 4) { a, b ->
-                    a + b
-                })
-        println(
-                calc(3, 4) { a, b ->
-                    a - b
-                })
-        println(
-                calc(3, 4) { a, b ->
-                    a * b
-                })
-        println(
-                calc(3, 4) { a, b ->
-                    a / b
-                })
+      println(
+              calc(3, 4) { a, b ->
+                  a + b
+              })
+      println(
+              calc(3, 4) { a, b ->
+                  a - b
+              })
+      println(
+              calc(3, 4) { a, b ->
+                  a * b
+              })
+      println(
+              calc(3, 4) { a, b ->
+                  a / b
+              })
 
-    }
-    ```
+  }
+  ```
 
     위 코드의 결과는 다음과 같다
 
-    ```
-    7
-    -1
-    12
-    0
-    ```
+  ```
+  7
+  -1
+  12
+  0
+  ```
