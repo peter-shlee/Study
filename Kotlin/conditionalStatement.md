@@ -1,8 +1,6 @@
-# 조건문, 반복문, 예외처리
+# 조건문
 
-## 조건문
-
-### 값 할당
+## 값 할당
 
 * Kotlin의 statements들은 값을 return한다
 * statement가 return하는 값을 이용한다
