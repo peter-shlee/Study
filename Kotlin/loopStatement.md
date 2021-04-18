@@ -4,6 +4,7 @@
   - [```for```](#for)
   - [```while```](#while)
   - [```do-while```](#do-while)
+  - [흐름 제어문](#흐름-제어문)
 
 ## ```for```
 
@@ -120,3 +121,73 @@
         반복할 statement
     } while (조건식)
     ```
+
+## 흐름 제어문
+
+* break
+* continue
+* return
+  * 비지역 반환 (non-local return)  
+    inline function 내의 람다식에서 return을 쓸 때는 비지역 반환이 일어난다. inline function의 작동 방식은 inline function의 호출부에 함수의 body를 복사해 code 수행 시간을 단축하는 것이다. 이 때 inline function 내 람다식의 body가 복사되면 컴파일러가 람다식의 return을 바깥쪽 함수의 return으로 인식해 non-local return이 발생한다.
+
+    ```Kotlin
+    fun main() {
+        outerFunc()
+    }
+
+    inline fun inlineFunc(a: Int, b: Int, calc: (Int, Int) -> (Unit)) {
+        calc(a, b)
+    }
+
+    fun outerFunc() {
+        println("outerFunc start")
+
+        inlineFunc(3, 4) { a, b ->
+            println("$a + $b = ${a + b}")
+            return // 1
+        } // 2
+
+        println("outerFunc end") // 3
+    }
+    ```
+
+    위 코드의 실행 결과는 다음과 같다
+
+    ```
+    outerFunc start
+    3 + 4 = 7
+    ```
+    
+    예상대로라면 "outerFunc end"까지 출력 된 후 프로그램이 종료되어야 하지만, "outerFunc end"가 출력되지 않았다.  
+    이렇게 된 이유는 람다식 내의 return을 ```outerFunc()```의 ```return```으로 인식해 ```outerFunc()```가 바로 종료되어 버렸기 때문이다.  
+    이 문제를 해결하기 위해 다음과 같이 label을 사용한다.
+    ```Kotlin
+    fun main() {
+        outerFunc()
+    }
+
+    inline fun inlineFunc(a: Int, b: Int, calc: (Int, Int) -> (Unit)) {
+        calc(a, b)
+    }
+
+    fun outerFunc() {
+        println("outerFunc start")
+
+        inlineFunc(3, 4) sum@{ a, b ->
+            println("$a + $b = ${a + b}")
+            return@sum // 1
+        } // 2
+
+        println("outerFunc end") // 3
+    }
+    ```
+
+    위 코드의 실행 결과는 다음과 같다
+
+    ```
+    outerFunc start
+    3 + 4 = 7
+    outerFunc end
+    ```
+
+    위와 같이 return label을 사용하여 어떤 closure에서 return 하는 것 인지 명시할 수 있다.
